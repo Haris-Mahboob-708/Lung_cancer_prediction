@@ -1,6 +1,6 @@
-# Health Condition Predictor
+# Lung Cancer Prediction
 
-This project deploys a Decision Tree Classifier to predict medical conditions based on patient symptoms.
+This project deploys a Decision Tree Classifier to predict lung cancer on the basis of symptoms.
 
 ## Data Information
 The model was trained on a dataset containing the following features:
