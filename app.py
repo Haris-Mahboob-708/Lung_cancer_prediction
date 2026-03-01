@@ -55,7 +55,8 @@ st.sidebar.markdown("---")
 st.sidebar.info("🤖 Model: Decision Tree Classifier\n\n⚠️ For informational purposes only. Not a substitute for medical advice.")
 
 # --- Input DataFrame ---
-feature_names = ['ALLERGY', 'SWALLOWING DIFFICULTY', 'ALCOHOL CONSUMING', 'COUGHING', 'YELLOW_FINGERS', 'CHEST PAIN']
+# Note: 'ALLERGY ' has a trailing space — this matches the feature name stored in the trained model.
+feature_names = ['ALLERGY ', 'SWALLOWING DIFFICULTY', 'ALCOHOL CONSUMING', 'COUGHING', 'YELLOW_FINGERS', 'CHEST PAIN']
 input_data = pd.DataFrame([[allergy, swallowing, alcohol, coughing, fingers, chest_pain]], columns=feature_names)
 
 # --- Live Prediction (no button needed) ---
