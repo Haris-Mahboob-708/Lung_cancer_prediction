@@ -19,8 +19,8 @@ def load_model():
 
 model = load_model()
 
-# Cache image loading
-@st.cache_data
+# Cache image loading as a resource (PIL Images are not efficiently serializable)
+@st.cache_resource
 def load_image(path):
     return Image.open(path)
 
@@ -57,12 +57,18 @@ st.sidebar.info("🤖 Model: Decision Tree Classifier\n\n⚠️ For informationa
 # --- Input DataFrame ---
 # Note: 'ALLERGY ' has a trailing space — this matches the feature name stored in the trained model.
 feature_names = ['ALLERGY ', 'SWALLOWING DIFFICULTY', 'ALCOHOL CONSUMING', 'COUGHING', 'YELLOW_FINGERS', 'CHEST PAIN']
-input_data = pd.DataFrame([[allergy, swallowing, alcohol, coughing, fingers, chest_pain]], columns=feature_names)
+
+# Cache prediction results so re-renders with identical inputs skip model inference.
+# _model is prefixed with underscore so Streamlit skips hashing the model object.
+@st.cache_data
+def run_prediction(_model, input_tuple, cols):
+    input_df = pd.DataFrame([list(input_tuple)], columns=list(cols))
+    pred = _model.predict(input_df)[0]
+    probs = _model.predict_proba(input_df)[0]
+    return pred, probs
 
 # --- Live Prediction (no button needed) ---
-with st.spinner("Analyzing symptoms..."):
-    prediction = model.predict(input_data)[0]
-    probs = model.predict_proba(input_data)[0]
+prediction, probs = run_prediction(model, (allergy, swallowing, alcohol, coughing, fingers, chest_pain), tuple(feature_names))
 
 class_label = "High Risk" if prediction == 1 or str(prediction).upper() == "YES" else "Low Risk"
 confidence  = probs[1] if prediction == 1 else probs[0]
