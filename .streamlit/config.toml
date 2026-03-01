@@ -1,0 +1,11 @@
+[server]
+# Use 'poll' watcher to reduce CPU overhead from file watching
+fileWatcherType = "poll"
+
+[runner]
+# Disable magic so Streamlit doesn't scan every variable on each rerun
+magicEnabled = false
+
+[client]
+# Show error details in the UI
+showErrorDetails = true
